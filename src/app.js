@@ -1,25 +1,28 @@
-const express= require('express');
+const dotenv = require("dotenv");
+const express = require("express");
+const mongoose = require("mongoose");
 
-// INITIALIZED EXPRESS APPLICATION+
+// INITIALIZED EXPRESS APPLICATION
 const app = express();
-PORT = process.env.PORT || 5000;
+dotenv.config({path:'./config.env'})
+require('./db/conn')
+PORT = process.env.PORT;
+const User = require("./models/userSchema");
+
 
 
 
 // ROUTES
-app.get('/', async (req, res) => {
-    try {
-        res.send("Node auth boilerplate")
-    }
-    catch (err) {
-        res.send(err.message)
-    }
-})
-
-
+app.get("/", async (req, res) => {
+  try {
+    res.send("Node auth boilerplate");
+  } catch (err) {
+    res.send(err.message);
+  }
+});
 
 // LISTENING TO THE DATABSASE
 app.listen(PORT, () => {
-console.log(`listening to the port ${PORT}`)
-console.log('Your server available at http://localhost:5000')
-})
+  console.log(`listening to the port ${PORT}`);
+  console.log("Your server available at http://localhost:8000");
+});

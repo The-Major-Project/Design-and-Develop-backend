@@ -4,22 +4,16 @@ const mongoose = require("mongoose");
 
 // INITIALIZED EXPRESS APPLICATION
 const app = express();
-dotenv.config({path:'./config.env'})
-require('./db/conn')
+dotenv.config({ path: "./config.env" });
+require("./db/conn");
+
 PORT = process.env.PORT;
-const User = require("./models/userSchema");
+// const User = require("./models/userSchema");
 
-
-
-
-// ROUTES
-app.get("/", async (req, res) => {
-  try {
-    res.send("Node auth boilerplate");
-  } catch (err) {
-    res.send(err.message);
-  }
-});
+// PARSING BODYDATA TO JSON
+app.use(express.json());
+// ROUTER INITTIALIZED
+app.use(require("./routes/router"));
 
 // LISTENING TO THE DATABSASE
 app.listen(PORT, () => {

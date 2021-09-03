@@ -18,17 +18,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  userType: {
+  usertype: {
     type: String,
     required: true,
   },
   githubusername: {
     type: String,
-    required: true,
   },
   dribbbleusername: {
     type: String,
-    required: true,
   },
 });
 

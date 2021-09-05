@@ -82,6 +82,12 @@ router.post("/login", async (req, res) => {
       // GENERATING AUTHORIZATION TOKEN
       let token = await usercheck.generateAuthToken();
 
+      // STORING TOKEN TO COOKIE
+      await res.cookie("jwtoken",token,{
+        expires: new Date(Date.now()+200000000000),
+        httpOnly: true,
+      })
+
       // CHECKING FOR USER CREDENTIALS
       if (usercheck && email == usercheck.email && isMatch) {
         return res.status(200).json({ message: "Login successfully" });
@@ -99,7 +105,7 @@ router.post("/login", async (req, res) => {
     // IN CASE OF INVALID USERID OR PASSWORD
   } catch (error) {
     //CATCH BLOCK
-    return res.status(400).json({ message: err });
+    return res.status(400).json({ message: error });
   }
 });
 

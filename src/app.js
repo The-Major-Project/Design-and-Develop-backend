@@ -4,14 +4,17 @@ const mongoose = require("mongoose");
 
 // INITIALIZED EXPRESS APPLICATION
 const app = express();
-dotenv.config({ path: "./config.env" });
-require("./db/conn");
 
+//DOTENV VARIABLES ADDED TO THE APPLICATION 
+dotenv.config({ path: "./config.env" });
+
+require("./db/conn");
 PORT = process.env.PORT;
 // const User = require("./models/userSchema");
 
 // PARSING BODYDATA TO JSON
 app.use(express.json());
+
 // ROUTER INITTIALIZED
 app.use(require("./routes/router"));
 

@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-// DATABASE CONNECTION
+// DATABASE VARIABLE
 const DB = process.env.DATABASE;
-
+// DATABASE CONNECTION VARIABLE
 mongoose
   .connect(DB)
   .then(() => {

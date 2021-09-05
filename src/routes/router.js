@@ -1,3 +1,4 @@
+const bcrypt = require("bcryptjs/dist/bcrypt");
 const express = require("express");
 const router = express.Router();
 const User = require("./../models/userSchema");
@@ -60,7 +61,6 @@ router.post("/register", async (req, res) => {
 
 // LOGIN ROUTE
 router.post("/login", async (req, res) => {
-
   // DESTRUCTURING THE VARIABLES
   const { email, password } = req.body;
 
@@ -69,32 +69,30 @@ router.post("/login", async (req, res) => {
     return res.status(400).json({ message: "fill the data properly" });
   }
   try {
-
     // GETTING THE DATA FORM DATABASE
     const usercheck = await User.findOne({ email: email });
 
     // CHECK FOR THE USER EXIXTANCE
-    if (!usercheck) {
+    if (usercheck) {
+
+      // CHECKING FOR THE PASSWORD
+      const isMatch = await bcrypt.compare(password, usercheck.password);
+
+      // CHECKING FOR USER CREDENTIALS
+      if (usercheck && email == usercheck.email && isMatch) {
+        return res.status(200).json({ message: "Login successfully" });
+      } 
+      else {
+        return res.status(500).json({ message: "invalid credentials" });
+      }
+    } 
+    else {
       return res.status(400).json({ message: "user is not registred" });
-    } 
-    
-    // CHECKING FOR USER CREDENTIALS
-    else if (
-      usercheck &&
-      email == usercheck.email &&
-      password == usercheck.password
-    ) {
-      return res.status(200).json({ message: "Login successfully" });
-    } 
+    }
 
     // IN CASE OF INVALID USERID OR PASSWORD
-    else {
-      return res.status(500).json({ message: "invalid credentials" });
-    }
-  } 
-
-  //CATCH BLOCK 
-  catch (error) {
+  } catch (error) {
+    //CATCH BLOCK
     return res.status(400).json({ message: err });
   }
 });

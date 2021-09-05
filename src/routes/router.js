@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs/dist/bcrypt");
 const express = require("express");
 const router = express.Router();
@@ -48,7 +49,7 @@ router.post("/register", async (req, res) => {
         githubusername,
         dribbbleusername,
       });
-
+      // WILL GET EXECUTED AFTER THE PRE METHOD IN USERSCHEMA.JS
       const result = await user.save();
       res.status(201).json({ message: "user registered successfully" });
       console.log(result);
@@ -72,21 +73,26 @@ router.post("/login", async (req, res) => {
     // GETTING THE DATA FORM DATABASE
     const usercheck = await User.findOne({ email: email });
 
-    // CHECK FOR THE USER EXIXTANCE
+    // CHECK FOR THE USER EXISTANCE
     if (usercheck) {
 
       // CHECKING FOR THE PASSWORD
       const isMatch = await bcrypt.compare(password, usercheck.password);
+
+      // GENERATING AUTHORIZATION TOKEN
+      let token = await usercheck.generateAuthToken();
 
       // CHECKING FOR USER CREDENTIALS
       if (usercheck && email == usercheck.email && isMatch) {
         return res.status(200).json({ message: "Login successfully" });
       } 
       else {
+        // IF PASSWORD IS NOT SAME
         return res.status(500).json({ message: "invalid credentials" });
       }
     } 
     else {
+      // IF THE USER IS NOT REGISTERED
       return res.status(400).json({ message: "user is not registred" });
     }
 

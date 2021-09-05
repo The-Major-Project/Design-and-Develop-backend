@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-
+const jwt = require("jsonwebtoken");
 // DEFINNG USERSCHEMA
 const userSchema = new mongoose.Schema({
   name: {
@@ -29,6 +29,14 @@ const userSchema = new mongoose.Schema({
   dribbbleusername: {
     type: String,
   },
+  tokens:[
+    {
+      token: {
+        type: String,
+        required: true,
+      }
+    }
+  ]
 });
 
 // HASHING THE CREDENTIALS
@@ -39,6 +47,21 @@ userSchema.pre("save", async function (next) {
   }
   next();
 });
+
+// GENERATING AUTHORIZATION TOKEN
+userSchema.methods.generateAuthToken = async function(){
+  try {
+    let token = await jwt.sign({_id: this._id},process.env.SECRET_KEY)
+    // ADDING TOKEN TO DATABASE
+    this.tokens = this.tokens.concat({token:token})
+    await this.save();
+    console.log("token: "+ token)
+    return token;
+  }
+  catch (error) {
+  console.log(error)  
+  }
+}
 
 // CREATING A MODEL FOR THE SCHEMA
 const User = mongoose.model("USER", userSchema);

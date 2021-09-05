@@ -47,6 +47,7 @@ router.post("/register", async (req, res) => {
         githubusername,
         dribbbleusername,
       });
+
       const result = await user.save();
       res.status(201).json({ message: "user registered successfully" });
       console.log(result);
@@ -59,7 +60,7 @@ router.post("/register", async (req, res) => {
 
 // LOGIN ROUTE
 router.post("/login", async (req, res) => {
-  
+
   // DESTRUCTURING THE VARIABLES
   const { email, password } = req.body;
 

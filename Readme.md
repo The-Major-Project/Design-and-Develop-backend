@@ -8,6 +8,11 @@ with a focus on
 <strong>Simplicity</strong> and <strong>best practices</strong>.
 </div>
 
+## Install NPM dependancies
+```shell
+npm install
+```
+
 ## Please create your own branch for adding a feature
 
 ```shell
@@ -18,10 +23,15 @@ git checkout -b <ticket-DD-branch-name>
 
 In the project directory, you can run:
 
-### `node src/app.js` or `npm start`
+```shell
+node src/app.js
+```
+```shell
+npm start
+```
 
 Runs the app in the development mode.\
-Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
+Open [http://localhost:8000](http://localhost:8000) to view it in the browser.
 
 
 ### `npm test`

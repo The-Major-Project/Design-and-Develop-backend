@@ -8,6 +8,11 @@ with a focus on
 <strong>Simplicity</strong> and <strong>best practices</strong>.
 </div>
 
+## Please create your own branch for adding a feature
+
+```shell
+git checkout -b <ticket-DD-branch-name>
+```
 
 ## Available Scripts
 

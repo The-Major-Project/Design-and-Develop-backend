@@ -1,7 +1,6 @@
 # Getting Started Nodejs Express Mongo Boilerplate Code
 
-### This is a custom template of node-boilerplate
-### with express and mongoose
+### This is a custom template of node-boilerplate with express and mongoose
 
 <div>Crafted for <strong>scalable</strong> & <strong>Simple</strong> and <strong>easily maintainable</strong> Node.js applications <br /> 
 with a focus on  

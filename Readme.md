@@ -29,6 +29,10 @@ node src/app.js
 npm start
 ```
 
+## For new feature take pull form staging and then Make a pull request to staging
+```shell
+git pull staging
+```
 Runs the app in the development mode.\
 Open [http://localhost:8000](http://localhost:8000) to view it in the browser.
 

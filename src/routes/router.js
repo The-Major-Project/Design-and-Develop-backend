@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
 
   // CHECK FOR THE DATA FIELDS
   if (!name || !email || !usertype || !password) {
-    return res.status(402).json({ message: "please fill the data properly" });
+    return res.status(422).json({ message: "please fill the data properly" });
   }
 
   try {
@@ -31,7 +31,7 @@ router.post("/register", async (req, res) => {
     const userExists = await User.findOne({ email: email });
 
     if (userExists) {
-      return res.status(400).json({ message: "email already exist" });
+      return res.status(422).json({ message: "email already exist" });
     }
 
     // REGISTERING THE USERDATA TO THE DATABASE
@@ -89,7 +89,7 @@ router.post("/login", async (req, res) => {
       } 
       else {
         // IF PASSWORD IS NOT SAME
-        return res.status(500).json({ message: "invalid credentials" });
+        return res.status(400).json({ message: "invalid credentials" });
       }
     } 
     else {

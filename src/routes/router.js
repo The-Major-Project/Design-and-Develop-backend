@@ -17,7 +17,6 @@ router.post("/register", async (req, res) => {
     email,
     usertype,
     password,
-    cpassword,
     githubusername,
     dribbbleusername,
   } = req.body;
@@ -34,10 +33,7 @@ router.post("/register", async (req, res) => {
     if (userExists) {
       return res.status(400).json({ message: "email already exist" });
     }
-    // CHECK FOR BOTH PASSWORD FIELDS
-    else if (password != cpassword) {
-      return res.status(400).json({ message: "password does'nt match" });
-    }
+
     // REGISTERING THE USERDATA TO THE DATABASE
     else {
       const user = new User({
@@ -45,7 +41,6 @@ router.post("/register", async (req, res) => {
         email,
         usertype,
         password,
-        cpassword,
         githubusername,
         dribbbleusername,
       });

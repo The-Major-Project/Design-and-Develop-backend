@@ -5,7 +5,7 @@ const cors = require("cors");
 // INITIALIZED EXPRESS APPLICATION
 const app = express();
 
-//DOTENV VARIABLES ADDED TO THE APPLICATION 
+//DOTENV VARIABLES ADDED TO THE APPLICATION
 dotenv.config({ path: "./config.env" });
 
 require("./db/conn");
@@ -21,6 +21,6 @@ app.use(require("./routes/router"));
 
 // LISTENING TO THE DATABSASE
 app.listen(PORT, () => {
-  console.log(`listening to the port ${PORT}`);
-  console.log("Your server available at http://localhost:8000");
+	console.log(`listening to the port ${PORT}`);
+	console.log("Your server available at http://localhost:8000");
 });

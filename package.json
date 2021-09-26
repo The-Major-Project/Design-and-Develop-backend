@@ -9,8 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app",
-    "dev": "nodemon  src/app",
+    "start": "node src/index.js",
+    "dev": "node src/index.js",
     "build": "webpack --watch"
   },
   "author": "Mihir Verma",

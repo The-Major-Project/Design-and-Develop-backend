@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
-
+const cors = require("cors");
 // INITIALIZED EXPRESS APPLICATION
 const app = express();
 
@@ -13,6 +13,7 @@ PORT = process.env.PORT;
 // const User = require("./models/userSchema");
 
 // PARSING BODYDATA TO JSON
+app.use(cors());
 app.use(express.json());
 
 // ROUTER INITTIALIZED

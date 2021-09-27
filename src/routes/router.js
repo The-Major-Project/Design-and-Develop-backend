@@ -1,13 +1,13 @@
+<<<<<<< HEAD
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs/dist/bcrypt");
+=======
+const bcrypt = require("bcryptjs");
+>>>>>>> b0227470a639a904d1f0b4375397de16ec5d7a27
 const express = require("express");
 const router = express.Router();
 const User = require("./../models/userSchema");
-
-// THE HOME ROUTE
-router.get("/", (req, res) => {
-  res.send("this is router");
-});
+const authenticate = require("../middleware/authenticate");
 
 // USER REGISTRATION ROUTE
 router.post("/register", async (req, res) => {
@@ -68,8 +68,9 @@ router.post("/login", async (req, res) => {
       const isMatch = await bcrypt.compare(password, usercheck.password);
 
       // GENERATING AUTHORIZATION TOKEN
-      let token = await usercheck.generateAuthToken();
+      const token = await usercheck.generateAuthToken();
 
+<<<<<<< HEAD
       // STORING TOKEN TO COOKIE
       await res.cookie("jwtoken", token, {
         expires: new Date(Date.now() + 200000000000),
@@ -79,6 +80,16 @@ router.post("/login", async (req, res) => {
       // CHECKING FOR USER CREDENTIALS
       if (usercheck && email == usercheck.email && isMatch) {
         return res.status(200).json({ message: "Login successfully" });
+=======
+      console.log("token in login : ", token);
+
+      // CHECKING FOR USER CREDENTIALS
+      if (usercheck && email == usercheck.email && isMatch) {
+        // SENDING THE ACCESSTOKEN TO FRONTEND WITH RESPONSE DATA
+        return res
+          .status(200)
+          .json({ message: "Login successfully", accessToken: token });
+>>>>>>> b0227470a639a904d1f0b4375397de16ec5d7a27
       } else {
         // IF PASSWORD IS NOT SAME
         return res.status(400).json({ message: "invalid credentials" });
@@ -93,6 +104,12 @@ router.post("/login", async (req, res) => {
     //CATCH BLOCK
     return res.status(400).json({ message: error });
   }
+});
+
+// HOME DASHBOARD PAGE
+router.get("/dashboard", authenticate, (req, res) => {
+  res.send(req.rootUser);
+  console.log("this is rootuser dashboard");
 });
 
 module.exports = router;

@@ -1,25 +1,14 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require("bcryptjs/dist/bcrypt");
+const bcrypt = require("bcryptjs");
 const express = require("express");
 const router = express.Router();
 const User = require("./../models/userSchema");
-
-// THE HOME ROUTE
-router.get("/", (req, res) => {
-  res.send("this is router");
-});
+const authenticate = require("../middleware/authenticate");
 
 // USER REGISTRATION ROUTE
 router.post("/register", async (req, res) => {
   // DESTRUCTURING THE BODYDATA
-  const {
-    name,
-    email,
-    usertype,
-    password,
-    githubusername,
-    dribbbleusername,
-  } = req.body;
+  const { name, email, usertype, password, githubusername, dribbbleusername } =
+    req.body;
 
   // CHECK FOR THE DATA FIELDS
   if (!name || !email || !usertype || !password) {
@@ -70,29 +59,25 @@ router.post("/login", async (req, res) => {
 
     // CHECK FOR THE USER EXISTANCE
     if (usercheck) {
-
       // CHECKING FOR THE PASSWORD
       const isMatch = await bcrypt.compare(password, usercheck.password);
 
       // GENERATING AUTHORIZATION TOKEN
-      let token = await usercheck.generateAuthToken();
+      const token = await usercheck.generateAuthToken();
 
-      // STORING TOKEN TO COOKIE
-      await res.cookie("jwtoken",token,{
-        expires: new Date(Date.now()+200000000000),
-        httpOnly: true,
-      })
+      console.log("token in login : ", token);
 
       // CHECKING FOR USER CREDENTIALS
       if (usercheck && email == usercheck.email && isMatch) {
-        return res.status(200).json({ message: "Login successfully" });
-      } 
-      else {
+        // SENDING THE ACCESSTOKEN TO FRONTEND WITH RESPONSE DATA
+        return res
+          .status(200)
+          .json({ message: "Login successfully", accessToken: token });
+      } else {
         // IF PASSWORD IS NOT SAME
         return res.status(400).json({ message: "invalid credentials" });
       }
-    } 
-    else {
+    } else {
       // IF THE USER IS NOT REGISTERED
       return res.status(400).json({ message: "user is not registred" });
     }
@@ -102,6 +87,12 @@ router.post("/login", async (req, res) => {
     //CATCH BLOCK
     return res.status(400).json({ message: error });
   }
+});
+
+// HOME DASHBOARD PAGE
+router.get("/dashboard", authenticate, (req, res) => {
+  res.send(req.rootUser);
+  console.log("this is rootuser dashboard");
 });
 
 module.exports = router;

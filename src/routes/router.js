@@ -90,7 +90,7 @@ router.post("/login", async (req, res) => {
 });
 
 // HOME DASHBOARD PAGE
-router.get("/dashboard", authenticate, (req, res) => {
+router.get("/", authenticate, (req, res) => {
 	res.send(req.rootUser);
 	console.log("this is rootuser dashboard");
 });

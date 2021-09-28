@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 
 // INITIALIZED EXPRESS APPLICATION
 const app = express();
@@ -17,7 +17,7 @@ PORT = process.env.PORT;
 // PARSING BODYDATA TO JSON
 app.use(express.json());
 app.use(cors());
-app.use(cookieParser()) ;
+app.use(cookieParser());
 
 // ROUTER INITTIALIZED
 app.use(require("./routes/router"));

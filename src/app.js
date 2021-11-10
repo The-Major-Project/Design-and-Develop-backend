@@ -3,6 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const userRouter = require("./routes/User");
+const authRouter = require("./routes/Auth");
+const postRouter = require("./routes/Posts");
 
 // INITIALIZED EXPRESS APPLICATION
 const app = express();
@@ -20,8 +23,9 @@ app.use(cors());
 app.use(cookieParser());
 
 // ROUTER INITTIALIZED
-app.use(require("./routes/Auth"));
-app.use(require("./routes/Posts"));
+app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/posts", postRouter);
 
 // LISTENING TO THE DATABSASE
 app.listen(PORT, () => {

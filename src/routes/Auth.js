@@ -9,20 +9,16 @@ router.post("/register", async (req, res) => {
 	// DESTRUCTURING THE BODYDATA
 	const { name, email, usertype, password, githubusername, dribbbleusername } =
 		req.body;
-
 	// CHECK FOR THE DATA FIELDS
 	if (!name || !email || !usertype || !password) {
 		return res.status(422).json({ message: "please fill the data properly" });
 	}
-
 	try {
 		//   CHECKING THAT THE USER ALREADY EXIST OR NOT
 		const userExists = await User.findOne({ email: email });
-
 		if (userExists) {
 			return res.status(422).json({ message: "email already exist" });
 		}
-
 		// REGISTERING THE USERDATA TO THE DATABASE
 		else {
 			const user = new User({
@@ -48,7 +44,6 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
 	// DESTRUCTURING THE VARIABLES
 	const { email, password } = req.body;
-
 	// CHEKCING FOR THE DATAFIELDS
 	if (!email || !password) {
 		return res.status(400).json({ message: "fill the data properly" });
@@ -56,17 +51,13 @@ router.post("/login", async (req, res) => {
 	try {
 		// GETTING THE DATA FORM DATABASE
 		const usercheck = await User.findOne({ email: email });
-
 		// CHECK FOR THE USER EXISTANCE
 		if (usercheck) {
 			// CHECKING FOR THE PASSWORD
 			const isMatch = await bcrypt.compare(password, usercheck.password);
-
 			// GENERATING AUTHORIZATION TOKEN
 			const token = await usercheck.generateAuthToken();
-
 			console.log("token in login : ", token);
-
 			// CHECKING FOR USER CREDENTIALS
 			if (usercheck && email == usercheck.email && isMatch) {
 				// SENDING THE ACCESSTOKEN TO FRONTEND WITH RESPONSE DATA
@@ -81,7 +72,6 @@ router.post("/login", async (req, res) => {
 			// IF THE USER IS NOT REGISTERED
 			return res.status(400).json({ message: "user is not registred" });
 		}
-
 		// IN CASE OF INVALID USERID OR PASSWORD
 	} catch (error) {
 		//CATCH BLOCK

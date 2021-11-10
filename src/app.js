@@ -20,7 +20,8 @@ app.use(cors());
 app.use(cookieParser());
 
 // ROUTER INITTIALIZED
-app.use(require("./routes/router"));
+app.use(require("./routes/Auth"));
+app.use(require("./routes/Posts"));
 
 // LISTENING TO THE DATABSASE
 app.listen(PORT, () => {

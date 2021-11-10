@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 // INITIALIZED EXPRESS APPLICATION
 const app = express();
@@ -14,11 +15,13 @@ PORT = process.env.PORT;
 // const User = require("./models/userSchema");
 
 // PARSING BODYDATA TO JSON
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
 
 // ROUTER INITTIALIZED
-app.use(require("./routes/router"));
+app.use(require("./routes/Auth"));
+app.use(require("./routes/Posts"));
 
 // LISTENING TO THE DATABSASE
 app.listen(PORT, () => {

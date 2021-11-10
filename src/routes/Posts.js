@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const router = require("express").Router();
 const Post = require("./../models/postSchema");
 const authenticate = require("../middleware/authenticate");
 

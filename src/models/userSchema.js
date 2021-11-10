@@ -2,38 +2,61 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 // DEFINNG USERSCHEMA
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  usertype: {
-    type: String,
-    required: true,
-  },
-  githubusername: {
-    type: String,
-  },
-  dribbbleusername: {
-    type: String,
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
-      },
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
     },
-  ],
-});
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    usertype: {
+      type: String,
+      required: true,
+    },
+    githubusername: {
+      type: String,
+    },
+    dribbbleusername: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    profileurl: {
+      type: String,
+    },
+    profileimage: {
+      type: String,
+    },
+    followers: {
+      type: Array,
+      default: [],
+    },
+    following: {
+      type: Array,
+      default: [],
+    },
+    description: {
+      type: String,
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 // HASHING THE CREDENTIALS
 userSchema.pre("save", async function (next) {

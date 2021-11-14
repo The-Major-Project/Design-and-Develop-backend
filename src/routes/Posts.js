@@ -3,13 +3,12 @@ const Post = require("../models/postSchema");
 const User = require("../models/userSchema");
 const mongoose = require("mongoose");
 
-
 // create post
 router.post("/", async (req, res) => {
   const newPost = new Post(req.body);
   try {
     const savedPost = await newPost.save();
-    res.status(200).json({ msg:"posted successfully" });
+    res.status(200).json({ msg: "posted successfully" });
   } catch (error) {
     res.status(500).json("error");
   }
@@ -78,25 +77,43 @@ router.get("/:id", async (req, res) => {
 });
 
 // get all posts of a user
-router.get('/:id/all', async(req, res) => {
-  const userId = req.params.id
+router.get("/:id/all", async (req, res) => {
+  const userId = req.params.id;
 
   try {
-	const userCheck = await User.findById(userId)
-	if (!userCheck){
-		return res.status(400).json({msg: 'User does not exist'})
-	}
-    const allPosts = await Post.find({userId:userId})
-    if(allPosts.length < 0) {
-      return res.status(200).json({msg:"no posts found"})
+    const userCheck = await User.findById(userId);
+    if (!userCheck) {
+      return res.status(400).json({ msg: "User does not exist" });
     }
-    else{
-      return res.status(200).json({data:allPosts})
+    const allPosts = await Post.find({ userId: userId });
+    if (allPosts.length < 0) {
+      return res.status(200).json({ msg: "no posts found" });
+    } else {
+      return res.status(200).json({ data: allPosts });
     }
   } catch (error) {
-    res.status(500).json({msg: "server error"})
+    res.status(500).json({ msg: "server error" });
   }
-})
+});
 
+// get all post except the current user
+router.get("/:id/allposts", async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const userCheck = await User.findById(userId);
+    if (!userCheck) {
+      return res.status(400).json({ msg: "User does not exist" });
+    }
+    const allPosts = await Post.find({ userId: { $ne: userId } });
+    if (allPosts.length < 0) {
+      return res.status(200).json({ msg: "no posts found" });
+    } else {
+      return res.status(200).json({ data: allPosts });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "server error" });
+  }
+});
 
 module.exports = router;

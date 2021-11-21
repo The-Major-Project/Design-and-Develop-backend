@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const express = require("express");
 const router = require("express").Router();
 const User = require("./../models/userSchema");
+const Post = require("../models/postSchema");
 const authenticate = require("../middleware/authenticate");
 
 // update
@@ -130,5 +131,67 @@ router.get("/:id/alluser", async (req, res) => {
   }
 });
 
-module.exports = router;
+// send collab req notification
+router.put("/:id/notification", async (req, res) => {
+  try {
+    // jisko notification jaega
+    // userid =  post creator
+    // currentuser =  request sender
+    const userId = req.params.id;
+    const postId = req.body.postId;
+    const currentUser = req.body.currentUserId;
+    const userCheck = await User.findById(userId);
+    if (!userCheck) {
+      return res.status(400).json({ msg: "User does not exist" });
+    }
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(400).json({ msg: "Post does not exist" });
+    }
+    const result = await userCheck.updateOne({
+      $push: {
+        notifications: {
+          userId: currentUser,
+          postId: postId,
+          notifType: "collabreq",
+        },
+      },
+    });
+   res.status(200).json({ data: result });
+  } catch (error) {
+    res.status(500).json({ msg: "server error" });
+  }
+});
 
+// accept collab req notification
+router.put("/:id/acceptnotification", async (req, res) => {
+  try {
+    // postid & current user  === accept karne vale ka hai
+    // userid === requestor ka hai
+    const userId = req.params.id;
+    const postId = req.body.postId;
+    const currentUser = req.body.currentUserId;
+    const userCheck = await User.findById(userId);
+    if (!userCheck) {
+      return res.status(400).json({ msg: "User does not exist" });
+    }
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(400).json({ msg: "Post does not exist" });
+    }
+    const result = await userCheck.updateOne({
+      $push: {
+        notifications: {
+          userId: currentUser,
+          postId: postId,
+          notifType: "acceptreq",
+        },
+      },
+    });
+    return res.status(200).json({ data: result });
+  } catch (error) {
+    res.status(500).json({ msg: "server error" });
+  }
+});
+
+module.exports = router;

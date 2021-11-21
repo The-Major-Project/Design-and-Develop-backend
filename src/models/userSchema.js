@@ -46,6 +46,19 @@ const userSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    notifications: [
+      {
+        userId: {
+          type: String,
+        },
+        postId: {
+          type: String,
+        },
+        notifType: {
+          type: String,
+        }
+      },
+    ],
     tokens: [
       {
         token: {

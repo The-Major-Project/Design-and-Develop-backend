@@ -157,7 +157,7 @@ router.put("/:id/notification", async (req, res) => {
         },
       },
     });
-   res.status(200).json({ data: result });
+    res.status(200).json({ data: result });
   } catch (error) {
     res.status(500).json({ msg: "server error" });
   }
@@ -188,6 +188,24 @@ router.put("/:id/acceptnotification", async (req, res) => {
         },
       },
     });
+
+    return res.status(200).json({ data: result });
+  } catch (error) {
+    res.status(500).json({ msg: "server error" });
+  }
+});
+
+// delete collab req notification
+router.put("/:id/deleteNotification", async (req, res) => {
+  try {
+    const acceptorUserId = req.body.acceptorUserId;
+    const notifId = req.params.id;
+    const result = await User.findOneAndUpdate(
+      { _id: acceptorUserId },
+      { $pull: { notifications: { _id: notifId } } },
+      { safe: true, multi: false }
+    );
+
     return res.status(200).json({ data: result });
   } catch (error) {
     res.status(500).json({ msg: "server error" });

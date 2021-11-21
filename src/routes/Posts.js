@@ -136,13 +136,10 @@ router.put("/:id/collabrequest", async (req, res) => {
     } else {
       res.status(400).json({ message: "your request was already sent" });
     }
-
-
   } catch (error) {
     res.status(500).json({ msg: "server error" });
   }
 });
-
 
 // Accept a collab request
 router.put("/:id/acceptcollabrequest", async (req, res) => {
@@ -166,12 +163,9 @@ router.put("/:id/acceptcollabrequest", async (req, res) => {
       await post.updateOne({ $push: { acceptors: userCheck.id } });
       res.status(200).json({ message: "your request has been accepted" });
     }
-
-
   } catch (error) {
     res.status(500).json({ msg: "server error" });
   }
 });
-
 
 module.exports = router;

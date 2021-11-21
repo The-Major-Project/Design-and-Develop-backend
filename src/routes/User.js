@@ -68,7 +68,7 @@ router.put("/:id/follow", async (req, res) => {
         await currentUser.updateOne({ $push: { following: [user.id] } });
         res.status(200).json({ message: "you have followed this user" });
       } else {
-        res.status(403).json({ message: "you already follow this user" });
+        res.status(400).json({ message: "you already follow this user" });
       }
     } catch (err) {
       res.status(400).json({ message: "user does not exist" });
@@ -99,4 +99,36 @@ router.put("/:id/unfollow", async (req, res) => {
   }
 });
 
+// get all post except the current user
+router.get("/:id/alluser", async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const userCheck = await User.findById(userId);
+    if (!userCheck) {
+      return res.status(400).json({ msg: "User does not exist" });
+    }
+    const allUsers = await User.find({ _id: { $ne: userId } }).select({
+      name: 1,
+      usertype: 1,
+      githubusername: 1,
+      dribbbleusername: 1,
+      address: 1,
+      profileurl: 1,
+      profileimage: 1,
+      followers: 1,
+      following: 1,
+      description: 1,
+    });
+    if (allUsers.length < 0) {
+      return res.status(200).json({ msg: "no users found" });
+    } else {
+      return res.status(200).json({ data: allUsers });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "server error" });
+  }
+});
+
 module.exports = router;
+

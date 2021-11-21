@@ -33,6 +33,14 @@ const PostSchema = new mongoose.Schema({
   likes:{
       type: Array,
       default:[]
+  },
+  requestors:{
+    type: Array,
+    default:[]
+  },
+  acceptors:{
+    type: Array,
+    default:[]
   }
 },
 { timestamps: true }

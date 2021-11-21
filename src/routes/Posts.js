@@ -116,4 +116,62 @@ router.get("/:id/allposts", async (req, res) => {
   }
 });
 
+// add a collab request
+router.put("/:id/collabrequest", async (req, res) => {
+  const requestorId = req.params.id;
+  const postId = req.body.postId;
+  try {
+    const userCheck = await User.findById(requestorId);
+    if (!userCheck) {
+      return res.status(400).json({ msg: "User does not exist" });
+    }
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(400).json({ msg: "Post does not exist" });
+    }
+
+    if (!post.requestors.includes(userCheck.id)) {
+      await post.updateOne({ $push: { requestors: userCheck.id } });
+      res.status(200).json({ message: "your request has been sent" });
+    } else {
+      res.status(400).json({ message: "your request was already sent" });
+    }
+
+
+  } catch (error) {
+    res.status(500).json({ msg: "server error" });
+  }
+});
+
+
+// Accept a collab request
+router.put("/:id/acceptcollabrequest", async (req, res) => {
+  const requestorId = req.params.id;
+  const postId = req.body.postId;
+  try {
+    const userCheck = await User.findById(requestorId);
+    if (!userCheck) {
+      return res.status(400).json({ msg: "User does not exist" });
+    }
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(400).json({ msg: "Post does not exist" });
+    }
+    // res.send(post)
+
+    if (!post.requestors.includes(userCheck.id)) {
+      res.status(400).json({ message: "Request not found" });
+    } else {
+      await post.updateOne({ $pull: { requestors: userCheck.id } });
+      await post.updateOne({ $push: { acceptors: userCheck.id } });
+      res.status(200).json({ message: "your request has been accepted" });
+    }
+
+
+  } catch (error) {
+    res.status(500).json({ msg: "server error" });
+  }
+});
+
+
 module.exports = router;

@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/User");
 const authRouter = require("./routes/Auth");
 const postRouter = require("./routes/Posts");
+const chatRouter = require("./routes/Chat");
 
 // INITIALIZED EXPRESS APPLICATION
 const app = express();
@@ -26,9 +27,10 @@ app.use(cookieParser());
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/chat", chatRouter);
 
 // LISTENING TO THE DATABSASE
 app.listen(PORT, () => {
-	console.log(`listening to the port ${PORT}`);
-	console.log("Your server available at http://localhost:8000");
+  console.log(`listening to the port ${PORT}`);
+  console.log("Your server available at http://localhost:8000");
 });
